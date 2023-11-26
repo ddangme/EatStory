@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:fragment="header">
+    <link rel="icon" href="/image/logo.svg" type="image/x-icon">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" type="text/css" href="/css/bootstrap.css">
+    <link rel="icon" href="/img/CleanLogo.png" type="image/x-icon">
+    <title>Eat Story</title>
+</head>
+<body>
+<bodyheader th:fragment="bodyHeader">
+    <nav class="navbar navbar-expand-lg bg-light" data-bs-theme="light">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/">
+                <img src="/img/CleanLogo.png" width="20" alt="로고">
+                Eat Story
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor03" aria-controls="navbarColor03" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarColor03">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/">Home
+                            <span class="visually-hidden">(current)</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Recipe</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Best</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">오늘 뭐먹지?</a>
+                    </li>
+                </ul>
+                <div th:if="${session['myValue'] != null}">
+                    <!-- 세션에 값이 있다면 -->
+                    <svg xmlns="http://www.w3.org/2000/svg" width="23" height="23" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16">
+                        <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
+                        <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"/>
+                    </svg>
+                </div>
+                <div th:unless="${session['myValue'] != null}">
+                    <!-- 세션에 값이 없다면 -->
+                    <button type="button" class="btn btn-secondary">로그인</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+</bodyheader>
+</body>
+<footer th:fragment="footer">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="/js/custom.js"></script>
+    <script src="/js/bootstrap.bundle.min.js"></script>
+    <script src="/js/main.js"></script>
+</footer>
+</html>
