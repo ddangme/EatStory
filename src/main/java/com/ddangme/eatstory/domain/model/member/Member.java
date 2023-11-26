@@ -2,12 +2,14 @@ package com.ddangme.eatstory.domain.model.member;
 
 import jakarta.persistence.*;
 import lombok.Builder;
+import lombok.Getter;
 import org.springframework.data.annotation.CreatedDate;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
+@Getter
 public class Member {
 
     @Id
