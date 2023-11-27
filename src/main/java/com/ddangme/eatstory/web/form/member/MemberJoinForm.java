@@ -1,33 +1,23 @@
 package com.ddangme.eatstory.web.form.member;
 
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
-import lombok.Getter;
-import org.springframework.format.annotation.DateTimeFormat;
+import lombok.Data;
 
-import java.time.LocalDate;
-
-@Getter
+@Data
 public class MemberJoinForm {
     @NotBlank
     private String loginId;
 
-    @NotBlank
     private String password;
 
     @NotBlank
-    private String name;
+    private String passwordCheck;
 
     @NotBlank
     private String nickname;
 
     @NotBlank
-    @Size(min = 10, max = 11)
-    private String phoneNumber;
-
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private LocalDate birthDay;
-
-    @NotBlank
+    @Email
     private String email;
 }

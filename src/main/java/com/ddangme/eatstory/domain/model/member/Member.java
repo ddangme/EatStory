@@ -3,13 +3,17 @@ package com.ddangme.eatstory.domain.model.member;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
 @Getter
+@NoArgsConstructor
+@EntityListeners(AuditingEntityListener.class)
 public class Member {
 
     @Id
@@ -21,8 +25,6 @@ public class Member {
     private String loginId;
 
     private String password;
-
-    private String name;
 
     private String nickname;
 
@@ -55,13 +57,10 @@ public class Member {
     private int mileage;
 
     @Builder
-    public Member(String loginId, String password, String name, String nickname, String phoneNumber, LocalDate birthDay, String email) {
+    public Member(String loginId, String password, String nickname, String email) {
         this.loginId = loginId;
         this.password = password;
-        this.name = name;
         this.nickname = nickname;
-        this.phoneNumber = phoneNumber;
-        this.birthDay = birthDay;
         this.email = email;
     }
 

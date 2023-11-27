@@ -5,6 +5,8 @@ import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 @RequiredArgsConstructor
 public class MemberRepository {
@@ -13,6 +15,22 @@ public class MemberRepository {
 
     public void join(Member member) {
         em.persist(member);
+    }
+
+    public Member findById(Long id) {
+        return em.find(Member.class, id);
+    }
+
+    public List<Member> findMemberByLoginId(String loginId) {
+        return em.createQuery("SELECT m FROM Member m WHERE m.loginId = :loginId", Member.class)
+                .setParameter("loginId", loginId)
+                .getResultList();
+    }
+
+    public List<Member> findMemberByEmail(String email) {
+        return em.createQuery("SELECT m FROM Member m WHERE m.email = :email", Member.class)
+                .setParameter("email", email)
+                .getResultList();
     }
 
 }

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/commonLayout :: header}"></head>
+<body>
+<bodyheader th:replace="~{fragments/commonLayout :: bodyHeader}"></bodyheader>
+<div class="container px-4 text-center">
+    <div class="row justify-content-md-center">
+        <div class="col col-lg-2"></div>
+        <div class="col-4">
+            <form role="form" action="/members/join" th:object="${memberJoinForm}" method="post">
+                <div th:classappend="${#fields.hasErrors('loginId')} ? 'form-group has-danger' : 'form-group'">
+                    <label class="form-label mt-4" for="loginId">로그인 ID</label>
+                    <input type="text" th:field="*{loginId}" id="loginId" placeholder="로그인 ID를 입력해주세요."
+                           th:class="${#fields.hasErrors('loginId')} ? 'form-control is-invalid' : 'form-control'">
+                    <div th:if="${#fields.hasErrors('loginId')}" th:errors="*{loginId}" class="invalid-feedback"></div>
+                </div>
+
+                <div th:classappend="${#fields.hasErrors('password')} ? 'form-group has-danger' : 'form-group'">
+                    <label class="form-label mt-4" for="password">비밀번호</label>
+                    <input type="password" th:field="*{password}" id="password" placeholder="비밀번호를 입력해주세요."
+                           th:class="${#fields.hasErrors('password')} ? 'form-control is-invalid' : 'form-control'">
+                    <div th:if="${#fields.hasErrors('password')}" th:errors="*{password}" class="invalid-feedback"></div>
+                </div>
+                <div th:classappend="${#fields.hasErrors('passwordCheck')} ? 'form-group has-danger' : 'form-group'">
+                    <label class="form-label mt-4" for="passwordCheck">비밀번호 확인</label>
+                    <input type="password" th:field="*{passwordCheck}" id="passwordCheck" placeholder="비밀번호를 입력해주세요."
+                           th:class="${#fields.hasErrors('passwordCheck')} ? 'form-control is-invalid' : 'form-control'">
+                    <div th:if="${#fields.hasErrors('passwordCheck')}" th:errors="*{passwordCheck}" class="invalid-feedback"></div>
+                </div>
+
+                <div th:classappend="${#fields.hasErrors('nickname')} ? 'form-group has-danger' : 'form-group'">
+                    <label class="form-label mt-4" for="nickname">닉네임</label>
+                    <input type="text" th:field="*{nickname}" id="nickname" placeholder="닉네임을 입력해주세요."
+                           th:class="${#fields.hasErrors('nickname')} ? 'form-control is-invalid' : 'form-control'">
+                    <div th:if="${#fields.hasErrors('nickname')}" th:errors="*{nickname}" class="invalid-feedback"></div>
+                </div>
+
+                <div th:classappend="${#fields.hasErrors('email')} ? 'form-group has-danger' : 'form-group'">
+                    <label class="form-label mt-4" for="email">이메일</label>
+                    <input type="text" th:field="*{email}" id="email" placeholder="이메일을 입력해주세요."
+                           th:class="${#fields.hasErrors('email')} ? 'form-control is-invalid' : 'form-control'">
+                    <div th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="invalid-feedback"></div>
+                </div>
+                <div class="mt-4">
+                    <button type="submit" class="btn btn-primary">회원가입</button>
+                </div>
+            </form>
+        </div>
+        <div class="col col-lg-2"></div>
+    </div>
+</div>
+</body>
+<footer th:replace="~{fragments/commonLayout :: footer}"></footer>
+</html>
+<script src="/js/token.js"></script>
