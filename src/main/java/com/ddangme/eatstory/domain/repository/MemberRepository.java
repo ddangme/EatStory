@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
@@ -21,10 +22,11 @@ public class MemberRepository {
         return em.find(Member.class, id);
     }
 
-    public List<Member> findMemberByLoginId(String loginId) {
+    public Optional<Member> findMemberByLoginId(String loginId) {
         return em.createQuery("SELECT m FROM Member m WHERE m.loginId = :loginId", Member.class)
                 .setParameter("loginId", loginId)
-                .getResultList();
+                .getResultList()
+                .stream().findFirst();
     }
 
     public List<Member> findMemberByEmail(String email) {

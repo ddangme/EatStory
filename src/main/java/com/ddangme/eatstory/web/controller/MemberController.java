@@ -26,32 +26,32 @@ public class MemberController {
     @GetMapping("/join")
     public String joinForm(Model model) {
         model.addAttribute("memberJoinForm", new MemberJoinForm());
-        return "members/memberJoinForm";
+        return "members/join";
     }
 
     @PostMapping("/join")
     public String join(@Validated @ModelAttribute MemberJoinForm joinForm, BindingResult bindingResult) {
 
         if (memberService.isNotLoginIdAvailable(joinForm.getLoginId())) {
-            bindingResult.rejectValue("loginId", "duplicate.memberJoinForm.loginId");
+            bindingResult.rejectValue("loginId", "Duplicate.memberJoinForm.loginId");
         }
 
         if (joinForm.getPassword() != null && joinForm.getPasswordCheck() != null) {
             if (memberService.invalidPassword(joinForm.getPassword(), joinForm.getPasswordCheck())) {
-                bindingResult.rejectValue("password", "validate.memberJoinForm.password");
+                bindingResult.rejectValue("password", "Validate.memberJoinForm.password");
             }
             if (memberService.invalidRegex(joinForm.getPassword(), joinForm.getPasswordCheck())) {
-                bindingResult.rejectValue("password", "regex.memberJoinForm.password");
+                bindingResult.rejectValue("password", "Regex.memberJoinForm.password");
             }
         }
 
         if (memberService.isNotEmailAvailable(joinForm.getEmail())) {
-            bindingResult.rejectValue("email", "duplicate.memberJoinForm.email");
+            bindingResult.rejectValue("email", "Duplicate.memberJoinForm.email");
         }
 
         if (bindingResult.hasErrors()) {
             log.error("join errors: {}", bindingResult);
-            return "members/memberJoinForm";
+            return "members/join";
         }
 
         Member member = Member.builder()
