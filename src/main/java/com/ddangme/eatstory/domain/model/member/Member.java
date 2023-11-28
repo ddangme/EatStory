@@ -1,5 +1,6 @@
 package com.ddangme.eatstory.domain.model.member;
 
+import com.ddangme.eatstory.domain.model.recipe.Recipe;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
@@ -9,6 +10,8 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -21,36 +24,28 @@ public class Member {
     @Column(name = "member_id")
     private Long id;
 
-    @Column(name = "login_id")
     private String loginId;
 
     private String password;
 
     private String nickname;
 
-    @Column(name = "phone_number")
     private String phoneNumber;
 
-    @Column(name = "birth_day")
     private LocalDate birthDay;
 
     private String email;
 
-    @Column(name = "member_type")
-    @Embedded
+    @Enumerated(EnumType.STRING)
     private MemberType memberType;
 
-    @Column(name = "member_status")
-    @Embedded
+    @Enumerated(EnumType.STRING)
     private MemberStatus memberStatus;
 
-    @Column(name = "profile_image")
     private String profileImage;
 
-    @Column(name = "profileSentence")
     private String profileSentence;
 
-    @Column(name = "join_day")
     @CreatedDate
     private LocalDateTime joinDay;
 
@@ -64,4 +59,6 @@ public class Member {
         this.email = email;
     }
 
+    @OneToMany(mappedBy = "member")
+    private List<Recipe> recipes = new ArrayList<>();
 }
