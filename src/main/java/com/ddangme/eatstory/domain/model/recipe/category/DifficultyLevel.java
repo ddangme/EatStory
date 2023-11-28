@@ -13,4 +13,8 @@ public enum DifficultyLevel {
     MASTER("신의경지");
 
     private final String difficultyLevel;
+
+    public static DifficultyLevel getDifficultyLevel(int index) {
+        return DifficultyLevel.values()[index];
+    }
 }

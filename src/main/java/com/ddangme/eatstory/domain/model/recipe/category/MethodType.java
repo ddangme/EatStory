@@ -22,4 +22,8 @@ public enum MethodType {
     OTHER("기타");
 
     private final String method;
+
+    public static MethodType getMethodType(int index) {
+        return MethodType.values()[index];
+    }
 }

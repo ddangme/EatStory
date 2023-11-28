@@ -26,4 +26,7 @@ public enum FoodType {
 
     private final String food;
 
+    public static FoodType getFoodType(int index) {
+        return FoodType.values()[index];
+    }
 }

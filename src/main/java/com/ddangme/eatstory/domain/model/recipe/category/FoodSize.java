@@ -15,4 +15,8 @@ public enum FoodSize {
 
     private final String size;
 
+    public static FoodSize getFoodSize(int index) {
+        return FoodSize.values()[index];
+    }
+
 }

@@ -25,4 +25,7 @@ public enum IngredientType {
 
     private final String ingredient;
 
+    public static IngredientType getIngredientType(int index) {
+        return IngredientType.values()[index];
+    }
 }

@@ -22,4 +22,8 @@ public enum SituationType {
     OTHER("기타");
 
     private final String situation;
+
+    public static SituationType getSituationType(int index) {
+        return SituationType.values()[index];
+    }
 }

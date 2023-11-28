@@ -17,4 +17,8 @@ public enum CookingTime {
     OVER_MIN_120("2시간 이상");
 
     private final String time;
+
+    public static CookingTime getCookingTime(int index) {
+        return CookingTime.values()[index];
+    }
 }

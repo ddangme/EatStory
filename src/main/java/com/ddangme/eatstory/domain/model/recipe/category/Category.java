@@ -1,9 +1,7 @@
 package com.ddangme.eatstory.domain.model.recipe.category;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Embeddable;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
+import com.ddangme.eatstory.domain.model.recipe.Recipe;
+import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -35,4 +33,14 @@ public class Category {
 
     @Enumerated(EnumType.STRING)
     private DifficultyLevel difficultyLevel;
+
+    public static Category getCategory(int foodType, int situationType, int methodType, int ingredientType) {
+        Category category = new Category();
+        category.foodType = FoodType.getFoodType(foodType);
+        category.situationType = SituationType.getSituationType(situationType);
+        category.methodType = MethodType.getMethodType(methodType);
+        category.ingredientType = IngredientType.getIngredientType(ingredientType);
+
+        return category;
+    }
 }
