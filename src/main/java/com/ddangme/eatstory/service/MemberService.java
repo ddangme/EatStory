@@ -26,7 +26,7 @@ public class MemberService {
         return !memberRepository.findMemberByLoginId(loginId).isEmpty();
     }
 
-    public boolean invalidRegex(String password, String passwordCheck) {
+    public boolean invalidRegex(String password) {
         String passwordPattern = "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[~!@#$%^&*()+|=])[A-Za-z\\d~!@#$%^&*()+|=]{8,16}$";
         Pattern pattern = Pattern.compile(passwordPattern);
         Matcher matcher = pattern.matcher(password);

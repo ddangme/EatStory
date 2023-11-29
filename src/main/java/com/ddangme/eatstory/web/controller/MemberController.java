@@ -3,17 +3,13 @@ package com.ddangme.eatstory.web.controller;
 import com.ddangme.eatstory.domain.model.member.Member;
 import com.ddangme.eatstory.service.MemberService;
 import com.ddangme.eatstory.web.form.member.MemberJoinForm;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 @Slf4j
 @Controller
@@ -31,23 +27,9 @@ public class MemberController {
 
     @PostMapping("/join")
     public String join(@Validated @ModelAttribute MemberJoinForm joinForm, BindingResult bindingResult) {
-
-        if (memberService.isNotLoginIdAvailable(joinForm.getLoginId())) {
-            bindingResult.rejectValue("loginId", "Duplicate.memberJoinForm.loginId");
-        }
-
-        if (joinForm.getPassword() != null && joinForm.getPasswordCheck() != null) {
-            if (memberService.invalidPassword(joinForm.getPassword(), joinForm.getPasswordCheck())) {
-                bindingResult.rejectValue("password", "Validate.memberJoinForm.password");
-            }
-            if (memberService.invalidRegex(joinForm.getPassword(), joinForm.getPasswordCheck())) {
-                bindingResult.rejectValue("password", "Regex.memberJoinForm.password");
-            }
-        }
-
-        if (memberService.isNotEmailAvailable(joinForm.getEmail())) {
-            bindingResult.rejectValue("email", "Duplicate.memberJoinForm.email");
-        }
+        validateLoginId(joinForm.getLoginId(), bindingResult);
+        validatePassword(joinForm.getPassword(), joinForm.getPasswordCheck(), bindingResult);
+        validateEmail(joinForm.getEmail(), bindingResult);
 
         if (bindingResult.hasErrors()) {
             log.error("join errors: {}", bindingResult);
@@ -64,5 +46,30 @@ public class MemberController {
         memberService.join(member);
 
         return "redirect:/";
+    }
+
+
+
+    private void validateLoginId(String loginId, BindingResult bindingResult) {
+        if (memberService.isNotLoginIdAvailable(loginId)) {
+            bindingResult.rejectValue("loginId", "Duplicate.memberJoinForm.loginId");
+        }
+    }
+
+    private void validatePassword(String password, String passwordCheck, BindingResult bindingResult) {
+        if (password != null && passwordCheck != null) {
+            if (memberService.invalidPassword(password, passwordCheck)) {
+                bindingResult.rejectValue("password", "Validate.memberJoinForm.password");
+            }
+            if (memberService.invalidRegex(password)) {
+                bindingResult.rejectValue("password", "Regex.memberJoinForm.password");
+            }
+        }
+    }
+
+    private void validateEmail(String email, BindingResult bindingResult) {
+        if (memberService.isNotEmailAvailable(email)) {
+            bindingResult.rejectValue("email", "Duplicate.memberJoinForm.email");
+        }
     }
 }
