@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/common-layout :: header}"></head>
+<body>
+<bodyheader th:replace="~{fragments/common-layout :: bodyHeader}"></bodyheader>
+<div class="container px-4 text-center mt-4">
+    <div class="card-body">
+        <form role="form" action="/recipe/write" th:object="${recipeWriteForm}" enctype="multipart/form-data" method="post">
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">레시피 기본 정보</h6>
+                </div>
+                <div class="row">
+                    <div class="col-lg-8">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <label for="mainPhoto" class="col-form-label mt-4">대표 이미지</label>
+                                    <input type="file" class="form-control" id="mainPhoto" th:field="*{mainPhoto}" accept="image/jpeg, image/png, image/jpg, image/gif"
+                                           th:class="${#fields.hasErrors('mainPhoto')} ? 'form-control is-invalid' : 'form-control'" onchange="previewImage()">
+                                    <div th:if="${#fields.hasErrors('mainPhoto')}" th:errors="*{mainPhoto}" class="invalid-feedback"></div>
+
+                                    <label for="title" class="col-form-label mt-4">레시피 제목</label>
+                                    <input class="form-control" id="title" th:field="*{title}" placeholder="예) 소고기 미역국 끓이기"
+                                           th:class="${#fields.hasErrors('title')} ? 'form-control is-invalid' : 'form-control'">
+                                    <div th:if="${#fields.hasErrors('title')}" th:errors="*{title}" class="invalid-feedback"></div>
+                                    
+                                    <label for="describe" class="col-form-label mt-4">레시피 소개</label>
+                                    <input class="form-control" id="describe" th:field="*{describe}" placeholder="예) 남편의 생일을 맞아 소고기 미역국을 끓여봤어요."
+                                           th:class="${#fields.hasErrors('describe')} ? 'form-control is-invalid' : 'form-control'">
+                                    <div th:if="${#fields.hasErrors('describe')}" th:errors="*{describe}" class="invalid-feedback"></div>
+                                    
+                                    <label for="videoLink" class="col-form-label mt-4">요리 동영상</label>
+                                    <input class="form-control" id="videoLink" th:field="*{videoLink}" placeholder="동영상이 있으면 주소를 입력하세요. (Youtube만 가능합니다.)"
+                                           th:class="${#fields.hasErrors('videoLink')} ? 'form-control is-invalid' : 'form-control'">
+                                    <div th:if="${#fields.hasErrors('videoLink')}" th:errors="*{videoLink}" class="invalid-feedback"></div>
+                                    
+                                </div>
+                                <div class="row mt-4">
+                                    <div class="col-12">
+                                        <label class="col-form-label">카테고리</label>
+                                    </div>
+                                    <div class="col-3">
+                                        <label class="form-label">종류별</label>
+                                        <select th:field="*{foodType}" th:class="${#fields.hasErrors('foodType')} ? 'form-select is-invalid' : 'form-select'">
+                                            <option value="">--종류별--</option>
+                                            <option th:each="foodType, iterStat : ${foodTypes}" th:value="${iterStat.index}" th:text="${foodType.food}"></option>
+                                        </select>
+                                        <div th:if="${#fields.hasErrors('foodType')}" th:errors="*{foodType}" class="invalid-feedback"></div>
+                                    </div>
+                                    <div class="col-3">
+                                        <label class="form-label">상황별</label>
+                                        <select th:field="*{situationType}" th:class="${#fields.hasErrors('situationType')} ? 'form-select is-invalid' : 'form-select'">
+                                            <option value="">--상황별--</option>
+                                            <option th:each="situationType, iterStat : ${situationTypes}" th:value="${iterStat.index}" th:text="${situationType.situation}"></option>
+                                        </select>
+                                        <div th:if="${#fields.hasErrors('situationType')}" th:errors="*{situationType}" class="invalid-feedback"></div>
+                                    </div>
+                                    <div class="col-3">
+                                        <label class="form-label">방법별</label>
+                                        <select th:field="*{methodType}" th:class="${#fields.hasErrors('methodType')} ? 'form-select is-invalid' : 'form-select'">
+                                            <option value="">--방법별--</option>
+                                            <option th:each="methodType, iterStat : ${methodTypes}" th:value="${iterStat.index}" th:text="${methodType.method}"></option>
+                                        </select>
+                                        <div th:if="${#fields.hasErrors('methodType')}" th:errors="*{methodType}" class="invalid-feedback"></div>
+                                    </div>
+                                    <div class="col-3">
+                                        <label class="form-label">재료별</label>
+                                        <select th:field="*{ingredientType}" th:class="${#fields.hasErrors('ingredientType')} ? 'form-select is-invalid' : 'form-select'">
+                                            <option value="">--재료별--</option>
+                                            <option th:each="ingredientType, iterStat : ${ingredientTypes}" th:value="${iterStat.index}" th:text="${ingredientType.ingredient}"></option>
+                                        </select>
+                                        <div th:if="${#fields.hasErrors('ingredientType')}" th:errors="*{ingredientType}" class="invalid-feedback"></div>
+                                    </div>
+                                </div>
+                                <div class="row mt-4">
+                                    <div class="col-12">
+                                        <label class="col-form-label">요리정보</label>
+                                    </div>
+                                    <div class="col-4">
+                                        <label class="form-label">인원</label>
+                                        <select th:field="*{foodSize}" th:class="${#fields.hasErrors('foodSize')} ? 'form-select is-invalid' : 'form-select'">
+                                            <option value="">--인원--</option>
+                                            <option th:each="foodSize, iterStat : ${foodSizes}" th:value="${iterStat.index}" th:text="${foodSize.size}"></option>
+                                        </select>
+                                        <div th:if="${#fields.hasErrors('foodSize')}" th:errors="*{foodSize}" class="invalid-feedback"></div>
+                                    </div>
+                                    <div class="col-4">
+                                        <label class="form-label">조리시간</label>
+                                        <select th:field="*{cookingTime}" th:class="${#fields.hasErrors('cookingTime')} ? 'form-select is-invalid' : 'form-select'">
+                                            <option value="">--조리시간--</option>
+                                            <option th:each="cookingTime, iterStat : ${cookingTimes}" th:value="${iterStat.index}" th:text="${cookingTime.time}"></option>
+                                        </select>
+                                        <div th:if="${#fields.hasErrors('cookingTime')}" th:errors="*{cookingTime}" class="invalid-feedback"></div>
+                                    </div>
+                                    <div class="col-4">
+                                        <label class="form-label">난이도</label>
+                                        <select th:field="*{difficultyLevel}" th:class="${#fields.hasErrors('difficultyLevel')} ? 'form-select is-invalid' : 'form-select'">
+                                            <option value="">--난이도--</option>
+                                            <option th:each="difficultyLevel, iterStat : ${difficultyLevels}" th:value="${iterStat.index}" th:text="${difficultyLevel.level}"></option>
+                                        </select>
+                                        <div th:if="${#fields.hasErrors('difficultyLevel')}" th:errors="*{difficultyLevel}" class="invalid-feedback"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-4 ">
+                        <img id="mainPhotoPreview" src="/img/main-photo-preview.png" alt="Main Photo Preview" style="max-width: 100%; height: auto; object-fit: cover; aspect-ratio: 1/1;  width: 100%;  display: block; margin: auto;" class="pt-4 pb-4 ps-4 pe-4">
+                    </div>
+                </div>
+            </div>
+            <div class="card shadow mb-4">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <label for="cookTips" class="col-form-label">요리팁</label>
+                            <textarea class="form-control" id="cookTips" th:field="*{cookTips}" rows="7"  placeholder="예) 고기요리에는 소금보다 설탕을 먼저 넣어야 단맛이 겉돌지 않고 육질이 부드러워요."
+                                th:class="${#fields.hasErrors('cookTips')} ? 'form-control is-invalid' : 'form-control'"></textarea>
+                            <div th:if="${#fields.hasErrors('cookTips')}" th:errors="*{cookTips}" class="invalid-feedback"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <button class="btn btn-lg btn-primary" type="submit">레시피 등록</button>
+        </form>
+
+    </div>
+
+</div>
+</body>
+<script src="/js/photo-upload.js"></script>
+<footer th:replace="~{fragments/common-layout :: footer}"></footer>
+</html>
