@@ -16,7 +16,7 @@
                             <div class="row">
                                 <div class="col-lg-12">
                                     <label for="mainPhoto" class="col-form-label mt-4">대표 이미지</label>
-                                    <input type="file" class="form-control" id="mainPhoto" th:field="*{mainPhoto}" accept="image/jpeg, image/png, image/jpg, image/gif" onchange="previewImage()">
+                                    <input type="file" class="form-control" id="mainPhoto" th:field="*{mainPhoto}" accept="image/jpeg, image/png, image/jpg, image/gif" onchange="mainPreviewImage()">
 
                                     <label for="title" class="col-form-label mt-4">레시피 제목</label>
                                     <input class="form-control" id="title" th:field="*{title}" placeholder="예) 소고기 미역국 끓이기">
@@ -55,7 +55,7 @@
                                     </div>
                                     <div class="col-3">
                                         <label class="form-label">재료별</label>
-                                        <select th:field="*{ingredientType}" class="form-select'">
+                                        <select th:field="*{ingredientType}" class="form-select">
                                             <option value="">--재료별--</option>
                                             <option th:each="ingredientType, iterStat : ${ingredientTypes}" th:value="${iterStat.index}" th:text="${ingredientType.ingredient}"></option>
                                         </select>
@@ -109,7 +109,7 @@
                                     <div class="row" id="ingredient-row-0">
                                         <div class="col-lg-3">
                                             <label class="col-form-label mt-4">재료 종류</label>
-                                            <input th:field="*{recipeIngredientWriteForms[__${0}__].category}"  class="form-control" id="inputDefault" placeholder="예) 소스"><br>
+                                            <input th:field="*{recipeIngredientWriteForms[__${0}__].category}"  class="form-control" placeholder="예) 소스"><br>
                                         </div>
                                         <div class="col-lg-4">
                                             <label class="col-form-label mt-4">재료 이름</label>
@@ -150,14 +150,109 @@
                 <input type="button" onclick="addIngredientRow()" class="btn btn-primary" style="margin: 10px 10px" value="재료/양념 묶음 추가">
             </div>
 
+
+
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">요리 순서</h6>
+                </div>
+                <div class="card-body" id="step-list">
+                    <small class="form-text text-muted">요리의 맛이 좌우될 수 있는 중요한 부분은 빠짐없이 적어주세요.<br>예) 10분간 익혀주세요 &#62; 10분간 약한불로 익혀주세요.</small><br><br>
+                    <div class="card shadow mb-4" id="step-0">
+                        <div class="row card-body">
+                            <div class="col-lg-9">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <br>
+                                        <textarea class="form-control" name="recipeStepWriteForms[0].detail" rows="7"  placeholder="예) 소고기는 기름을 떼어내고 적당한 크기로 썰어주세요."></textarea>
+                                    </div>
+                                    <div class="col-2 mt-3 align-self-center">
+                                        <small>재료 정보</small>
+                                    </div>
+                                    <div class="col-10 mt-3">
+                                        <input name="recipeStepWriteForms[0].ingredient" class="form-control" placeholder="예) 밀가루 100g, 소금 2큰술, 물 100g">
+                                    </div>
+                                    <div class="col-2 mt-1 align-self-center">
+                                        <small>도구 정보</small>
+                                    </div>
+                                    <div class="col-10 mt-1">
+                                        <input name="recipeStepWriteForms[0].tool" class="form-control" placeholder="예) 국자, 가위">
+                                    </div>
+                                    <div class="col-2 mt-1 align-self-center">
+                                        <small>불 조절</small>
+                                    </div>
+                                    <div class="col-10 mt-1">
+                                        <input name="recipeStepWriteForms[0].fire" class="form-control" placeholder="예) 강불, 약불">
+                                    </div>
+                                    <div class="col-2 mt-1 align-self-center">
+                                        <small>요리 팁</small>
+                                    </div>
+                                    <div class="col-10 mt-1">
+                                        <input name="recipeStepWriteForms[0].tip" class="form-control" placeholder="예) 아삭한 식감의 콩나물이 좋다면 다음 단계에서 넣으세요.">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-3">
+                                <label for="mainPhoto" class="col-form-label mt-4">음식 이미지</label>
+                                <input type="file" class="form-control" id="step-photo-0" name="recipeStepWriteForms[0].photo" accept="image/jpeg, image/png, image/jpg, image/gif" onchange="stepPreviewImage(this)">
+                                <img id="step-photo-preview-0" src="/img/step-default.gif" alt="Step Photo Preview" style="max-width: 100%; height: auto; object-fit: cover; aspect-ratio: 1/1;  width: 100%;  display: block; margin: auto;" class="pt-4 pb-4 ps-4 pe-4">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <input type="button" onclick="addStep(this.parentElement)" class="btn btn-primary" style="margin: 10px 10px" value="순서 추가">
+            </div>
+
+            <div class="card shadow mb-4">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-lg-3 align-self-center">
+                            <div class="row">
+                                <div class="col-12">
+                                    요리 완성 사진
+                                </div>
+                                <div class="col-12"><br></div>
+                                <div class="col-12">
+                                    <input type="button" id="all-final-photo-input" onclick="addAllFinalPhoto()" class="btn btn-primary" style="margin: 10px 10px" value="한번에 추가하기">
+                                    <input type="file" class="form-control" id="final-photo" name="finalPhotos" accept="image/jpeg, image/png, image/jpg, image/gif" style="display: none" multiple="multiple">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-9">
+                            <div class="row" id="final-photo-list">
+                                <div class="col">
+                                    <img src="/img/step-default.gif" id="final-photo-preview-0" onclick="fileLoad(this)" style="cursor: pointer; max-width: 100%; height: auto; object-fit: cover; aspect-ratio: 1/1;  width: 100%;  display: block; margin: auto;">
+                                    <input type="file" class="form-control" id="final-photo-0" name="finalPhotos[0]" accept="image/jpeg, image/png, image/jpg, image/gif" style="display: none">
+                                </div>
+                                <div class="col">
+                                    <img src="/img/step-default.gif" id="final-photo-preview-1" onclick="fileLoad(this)" style="cursor: pointer; max-width: 100%; height: auto; object-fit: cover; aspect-ratio: 1/1;  width: 100%;  display: block; margin: auto;">
+                                    <input type="file" class="form-control" id="final-photo-1" name="finalPhotos[1]" accept="image/jpeg, image/png, image/jpg, image/gif" style="display: none">
+                                </div>
+                                <div class="col">
+                                    <img src="/img/step-default.gif" id="final-photo-preview-2" onclick="fileLoad(this)" style="cursor: pointer; max-width: 100%; height: auto; object-fit: cover; aspect-ratio: 1/1;  width: 100%;  display: block; margin: auto;">
+                                    <input type="file" class="form-control" id="final-photo-2" name="finalPhotos[2]" accept="image/jpeg, image/png, image/jpg, image/gif" style="display: none">
+                                </div>
+                                <div class="col">
+                                    <img src="/img/step-default.gif" id="final-photo-preview-3" onclick="fileLoad(this)" style="cursor: pointer; max-width: 100%; height: auto; object-fit: cover; aspect-ratio: 1/1;  width: 100%;  display: block; margin: auto;">
+                                    <input type="file" class="form-control" id="final-photo-3" name="finalPhotos[3]" accept="image/jpeg, image/png, image/jpg, image/gif" style="display: none">
+                                </div>
+                                <div class="col">
+                                    <img src="/img/step-default.gif" id="final-photo-preview-4" onclick="fileLoad(this)" style="cursor: pointer; max-width: 100%; height: auto; object-fit: cover; aspect-ratio: 1/1;  width: 100%;  display: block; margin: auto;">
+                                    <input type="file" class="form-control" id="final-photo-4" name="finalPhotos[4]" accept="image/jpeg, image/png, image/jpg, image/gif" style="display: none">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
             <div class="card shadow mb-4">
                 <div class="card-body">
                     <div class="row">
                         <div class="col-lg-12">
-                            <label for="cookTips" class="col-form-label">요리팁</label>
-                            <textarea class="form-control" id="cookTips" th:field="*{cookTips}" rows="7"  placeholder="예) 고기요리에는 소금보다 설탕을 먼저 넣어야 단맛이 겉돌지 않고 육질이 부드러워요."
-                                th:class="${#fields.hasErrors('cookTips')} ? 'form-control is-invalid' : 'form-control'"></textarea>
-                            <div th:if="${#fields.hasErrors('cookTips')}" th:errors="*{cookTips}" class="invalid-feedback"></div>
+                            <label for="cookTips" class="col-form-label">요리 팁</label>
+                            <textarea class="form-control" id="cookTips" th:field="*{cookTips}" rows="7"  placeholder="예) 고기요리에는 소금보다 설탕을 먼저 넣어야 단맛이 겉돌지 않고 육질이 부드러워요."></textarea>
                         </div>
                     </div>
                 </div>
@@ -169,7 +264,6 @@
 
 </div>
 </body>
-<script src="/js/photo-upload.js"></script>
 <script src="/js/recipe-write.js"></script>
 <footer th:replace="~{fragments/common-layout :: footer}"></footer>
 </html>

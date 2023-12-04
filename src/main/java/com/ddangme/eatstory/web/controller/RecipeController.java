@@ -1,6 +1,7 @@
 package com.ddangme.eatstory.web.controller;
 
 import com.ddangme.eatstory.domain.model.recipe.category.*;
+import com.ddangme.eatstory.web.form.recipe.RecipeIngredientWriteForm;
 import com.ddangme.eatstory.web.form.recipe.RecipeWriteForm;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -22,16 +24,28 @@ import java.util.List;
 public class RecipeController {
 
     @GetMapping("write")
-    public String recipeWriteForm(Model model) {
+    public String RecipeDetailWriteForm(Model model) {
         addCategory(model);
         model.addAttribute("recipeWriteForm", new RecipeWriteForm());
         return "recipe/write";
     }
 
     @PostMapping("write")
-    public String recipeWrite(@Validated @ModelAttribute RecipeWriteForm form, BindingResult bindingResult, Model model) {
+    public String recipeWrite(@ModelAttribute RecipeWriteForm form, BindingResult bindingResult, Model model) {
+        for (MultipartFile m : form.getFinalPhotos()) {
+            System.out.println("file name: " + m.getOriginalFilename());
+        }
 
-        System.out.println(form.getFoodType());
+        for (RecipeIngredientWriteForm ingredientWriteForm : form.getRecipeIngredientWriteForms()) {
+            System.out.println(ingredientWriteForm.getCategory());
+            for (String ingredient : ingredientWriteForm.getIngredients()) {
+                System.out.println(ingredient);
+            }
+            for (String amount : ingredientWriteForm.getAmounts()) {
+                System.out.println(amount);
+            }
+        }
+
         if (bindingResult.hasErrors()) {
             log.error("recipe write errors: {}", bindingResult);
             addCategory(model);

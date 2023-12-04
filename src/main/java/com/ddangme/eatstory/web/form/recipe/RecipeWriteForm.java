@@ -3,9 +3,13 @@ package com.ddangme.eatstory.web.form.recipe;
 import com.ddangme.eatstory.domain.model.recipe.category.FoodType;
 import jakarta.validation.constraints.*;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.validator.constraints.Range;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 @Data
 public class RecipeWriteForm {
@@ -37,5 +41,11 @@ public class RecipeWriteForm {
     private Integer difficultyLevel;
 
     private String cookTips;
+
+    private List<RecipeIngredientWriteForm> recipeIngredientWriteForms;
+
+    private List<RecipeStepWriteForm> recipeStepWriteForms;
+
+    private List<MultipartFile> finalPhotos;
 
 }
