@@ -278,3 +278,75 @@ function addStep(e) {
 function deleteStep(e) {
     e.parentElement.parentElement.parentElement.parentElement.remove();
 }
+
+function write_check() {
+    const form = document.data;
+
+    if (form.mainPhoto.value == '') {
+        return error_alert_focus('대표 이미지', form.mainPhoto);
+    }
+    if (form.title.value == '') {
+        return error_alert_focus('레시피 제목', form.title);
+    }
+    if (form.describe.value == '') {
+        return error_alert_focus('레시피 소개', form.describe);
+    }
+    if (form.foodType.value == '') {
+        return error_alert_focus('카테고리 (종류별)', form.foodType);
+    }
+    if (form.situationType.value == '') {
+        return error_alert_focus('카테고리 (상황별)', form.situationType);
+    }
+    if (form.methodType.value == '') {
+        return error_alert_focus('카테고리 (방법별)', form.methodType);
+    }
+    if (form.ingredientType.value == '') {
+        return error_alert_focus('카테고리 (재료별)', form.ingredientType);
+    }
+    if (form.foodSize.value == '') {
+        return error_alert_focus('요리정보 (인원)', form.foodSize);
+    }
+    if (form.cookingTime.value == '') {
+        return error_alert_focus('요리정보 (조리시간)', form.cookingTime);
+    }
+    if (form.difficultyLevel.value == '') {
+        return error_alert_focus('요리정보 (난이도)', form.difficultyLevel);
+    }
+
+    var categorys = form.querySelectorAll('input[name^="recipeIngredientWriteForms["][name$="].category"]');
+
+    for (var i = 0; i < categorys.length; i++) {
+        var input = categorys[i];
+
+        if (input.value == '') {
+            return error_alert_focus('재료 종류', input);
+        }
+    }
+
+    var InputIngredientData = document.querySelectorAll('#ingredient-list input');
+
+    for (var i = 0; i < InputIngredientData.length; i++) {
+        if (InputIngredientData[i].value == '') {
+            return error_alert_focus("레시피 재료 정보", InputIngredientData[i]);
+        }
+    }
+
+    var details = document.querySelectorAll('textarea[name^="recipeStepWriteForms["][name$="].detail"]');
+
+    for (var i = 0; i < details.length; i++) {
+        var input = details[i];
+
+        if (input.value == '') {
+            return error_alert_focus('요리 순서', input);
+        }
+    }
+
+    form.submit();
+}
+
+
+function error_alert_focus(word, f) {
+    alert(word + "을(를) 입력해주세요.");
+    f.focus();
+}
+

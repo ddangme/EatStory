@@ -5,7 +5,7 @@
 <bodyheader th:replace="~{fragments/common-layout :: bodyHeader}"></bodyheader>
 <div class="container px-4 text-center mt-4">
     <div class="card-body">
-        <form role="form" action="/recipe/write" th:object="${recipeWriteForm}" enctype="multipart/form-data" method="post">
+        <form role="form" action="/recipe/write" th:object="${recipeWriteForm}" enctype="multipart/form-data" method="post" name="data">
             <div class="card shadow mb-4">
                 <div class="card-header py-3">
                     <h6 class="m-0 font-weight-bold text-primary">레시피 기본 정보</h6>
@@ -257,9 +257,8 @@
                     </div>
                 </div>
             </div>
-            <button class="btn btn-lg btn-primary" type="submit">레시피 등록</button>
+            <input class="btn btn-lg btn-primary" onclick="write_check()" value="레시피 등록">
         </form>
-
     </div>
 
 </div>
