@@ -22,6 +22,10 @@ public class MemberService {
         return member.getId();
     }
 
+    public Member findById(Long id) {
+        return memberRepository.findById(id);
+    }
+
     public boolean isNotLoginIdAvailable(String loginId) {
         return !memberRepository.findMemberByLoginId(loginId).isEmpty();
     }

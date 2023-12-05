@@ -344,7 +344,6 @@ function write_check() {
     form.submit();
 }
 
-
 function error_alert_focus(word, f) {
     alert(word + "을(를) 입력해주세요.");
     f.focus();

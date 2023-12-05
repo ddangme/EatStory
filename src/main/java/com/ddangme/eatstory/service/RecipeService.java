@@ -26,6 +26,12 @@ public class RecipeService {
         return recipe.getId();
     }
 
+    @Transactional
+    public Long saveRecipeData(Recipe recipe) {
+        saveRecipe(recipe);
+        return recipe.getId();
+    }
+
     private void saveRecipe(Recipe recipe) {
         recipeRepository.saveRecipe(recipe);
     }

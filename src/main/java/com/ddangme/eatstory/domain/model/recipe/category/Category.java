@@ -2,10 +2,7 @@ package com.ddangme.eatstory.domain.model.recipe.category;
 
 import com.ddangme.eatstory.domain.model.recipe.Recipe;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Embeddable
 @Getter
@@ -42,5 +39,18 @@ public class Category {
         category.ingredientType = IngredientType.getIngredientType(ingredientType);
 
         return category;
+    }
+    
+    @Builder
+    public Category(Integer foodType, Integer situationType, Integer methodType, 
+                    Integer ingredientType, Integer foodSize, Integer cookingTime,
+                    Integer difficultyLevel) {
+        this.foodType = FoodType.getFoodType(foodType);
+        this.situationType = SituationType.getSituationType(situationType);
+        this.methodType = MethodType.getMethodType(methodType);
+        this.ingredientType = IngredientType.getIngredientType(ingredientType);
+        this.foodSize = FoodSize.getFoodSize(foodSize);
+        this.cookingTime = CookingTime.getCookingTime(cookingTime);
+        this.difficultyLevel = DifficultyLevel.getDifficultyLevel(difficultyLevel);
     }
 }

@@ -4,6 +4,7 @@ import com.ddangme.eatstory.domain.model.UploadFile;
 import com.ddangme.eatstory.domain.model.member.Member;
 import com.ddangme.eatstory.domain.model.recipe.category.Category;
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
@@ -66,5 +67,20 @@ public class Recipe {
     public void setMember(Member member) {
         this.member = member;
         member.getRecipes().add(this);
+    }
+
+    @Builder
+    public Recipe(String title, String describe, String videoLink, String cookTips,
+                  Category category, UploadFile uploadFile,
+                  RecipeStatus recipeStatus,
+                  Member member) {
+        this.title = title;
+        this.describe = describe;
+        this.videoLink = videoLink;
+        this.cookTips = cookTips;
+        this.category = category;
+        this.mainPhoto = uploadFile;
+        this.recipeStatus = recipeStatus;
+        this.member = member;
     }
 }
