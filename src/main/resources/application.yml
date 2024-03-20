@@ -16,7 +16,7 @@ spring:
   sql.init.mode: always
 
 jwt:
-  secret-key: fast_campus.sns-application-2024.secret_key
+  secret-key: ddang_me_eat_story_application-2024.secret_key
   token.expired-time-ms: 2592000000
 ---
 
