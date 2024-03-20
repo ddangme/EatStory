@@ -1,8 +1,8 @@
 package com.ddangme.eatstory.domain;
 
-import jakarta.persistence.*;
 import lombok.*;
 
+import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Getter
@@ -25,6 +25,9 @@ public class User extends AuditingFields {
     private String nickname;
 
     @Enumerated(EnumType.STRING)
+    private UserRole userRole;
+
+    @Enumerated(EnumType.STRING)
     private UserStatus userStatus;
 
     private String img;
@@ -36,6 +39,7 @@ public class User extends AuditingFields {
                 .userId(userId)
                 .password(password)
                 .nickname(userId)
+                .userRole(UserRole.USER)
                 .userStatus(UserStatus.NORMAL)
                 .img(null)
                 .build();

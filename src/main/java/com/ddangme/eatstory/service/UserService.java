@@ -6,21 +6,26 @@ import com.ddangme.eatstory.dto.request.UserJoinRequest;
 import com.ddangme.eatstory.dto.request.UserLoginRequest;
 import com.ddangme.eatstory.exception.EatStoryException;
 import com.ddangme.eatstory.exception.ErrorCode;
-import org.springframework.beans.factory.annotation.Value;
 import com.ddangme.eatstory.repository.UserRepository;
 import com.ddangme.eatstory.utils.JwtTokenUtil;
 import lombok.RequiredArgsConstructor;
-
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Optional;
 
 
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
-public class UserService {
+public class UserService implements UserDetailsService {
 
     private final UserRepository userRepository;
+    private final BCryptPasswordEncoder encoder;
 
 
     @Value("${jwt.secret-key}")
@@ -29,36 +34,43 @@ public class UserService {
     @Value("${jwt.token.expired-time-ms}")
     private Long expiredTimeMs;
 
-    public String login(UserLoginRequest request) {
-        User user = userRepository.findByUserId(request.getUserId())
-                .orElseThrow(() -> new EatStoryException(ErrorCode.USER_NOT_FOUND, String.format("%s not founded", request.getUserId())));
+    @Override
+    public UserDto loadUserByUsername(String username) throws UsernameNotFoundException {
+        return userRepository.findByUserId(username)
+                .map(UserDto::fromEntity)
+                .orElseThrow(() ->
+                        new EatStoryException(ErrorCode.USER_NOT_FOUND));
+    }
 
-        if (!user.getPassword().equals(request.getUserPassword())) {
-            throw new EatStoryException(ErrorCode.MISMATCH_PASSWORD);
+    public String login(UserLoginRequest request) {
+        UserDto response = loadUserByUsername(request.getUserId());
+
+        if (!encoder.matches(request.getUserPassword(), response.getPassword())) {
+            throw new EatStoryException(ErrorCode.INVALID_PASSWORD);
         }
-//        if (!encoder.matches(request.getUserPassword(), user.getPassword())) {
-//            throw new EatStoryException(ErrorCode.MISMATCH_PASSWORD);
-//        }
-        System.out.println("hihi");
-        return JwtTokenUtil.generatedToken(request.getUserId(), secretKey, expiredTimeMs);
+
+        return JwtTokenUtil.generateAccessToken(request.getUserId(), secretKey, expiredTimeMs);
     }
 
     @Transactional
     public UserDto join(UserJoinRequest request) {
-        User user = userRepository.save(User.join(request.getUserId(), request.getUserPassword()));
+        userRepository.findByUserId(request.getUserId())
+                .ifPresent(it -> {
+                    throw new EatStoryException(ErrorCode.DUPLICATED_USER_NAME);
+                });
 
-//        User user = userRepository.save(User.join(request.getUserId(), encoder.encode(request.getUserPassword())));
+        if (!request.getUserPassword().equals(request.getUserPasswordCheck())) {
+            throw new EatStoryException(ErrorCode.MISMATCH_PASSWORD);
+        }
 
-        return UserDto.fromEntity(user);
+        User joinUser = userRepository.save(User.join(request.getUserId(), encoder.encode(request.getUserPassword())));
+
+        return UserDto.fromEntity(joinUser);
     }
 
-    public boolean existUserId(String userId) {
-        return userRepository.findByUserId(userId).isPresent();
-    }
-
-    public UserDto loadUserByUserName(String userName) {
-        return userRepository.findByUserId(userName).map(UserDto::fromEntity).orElseThrow(() ->
-                new EatStoryException(ErrorCode.USER_NOT_FOUND, String.format("%s not founded", userName)));
+    public Optional<UserDto> searchUser(String userId) {
+        return userRepository.findByUserId(userId)
+                .map(UserDto::fromEntity);
     }
 
 }
