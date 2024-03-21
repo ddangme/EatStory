@@ -15,7 +15,7 @@ import java.util.List;
 
 @Getter
 @AllArgsConstructor
-public class UserDto implements UserDetails {
+public class UserDto {
 
     private Long id;
     private String userId;
@@ -59,34 +59,4 @@ public class UserDto implements UserDetails {
         return new UserDto(id, userId, password, nickname);
     }
 
-
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority(userRole.toString()));
-    }
-
-    @Override
-    public String getUsername() {
-        return userId;
-    }
-
-    @Override
-    public boolean isAccountNonExpired() {
-        return deletedAt == null;
-    }
-
-    @Override
-    public boolean isAccountNonLocked() {
-        return !userStatus.equals(UserStatus.WITHDRAWN);
-    }
-
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return !userStatus.equals(UserStatus.WITHDRAWN);
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return !userStatus.equals(UserStatus.WITHDRAWN);
-    }
 }

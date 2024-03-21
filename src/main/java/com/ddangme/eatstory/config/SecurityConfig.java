@@ -1,17 +1,18 @@
 package com.ddangme.eatstory.config;
 
-import com.ddangme.eatstory.dto.UserDto;
+import com.ddangme.eatstory.dto.UserPrincipal;
 import com.ddangme.eatstory.exception.EatStoryException;
 import com.ddangme.eatstory.exception.ErrorCode;
 import com.ddangme.eatstory.service.UserService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.factory.PasswordEncoderFactories;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
 @EnableWebSecurity
@@ -30,11 +31,7 @@ public class SecurityConfig {
                         ).permitAll()
                         .anyRequest().authenticated()
                 )
-                .formLogin(form -> form
-                        .loginPage("/login")
-                        .defaultSuccessUrl("/")
-                        .permitAll()
-                )
+                .formLogin(Customizer.withDefaults())
                 .logout(logout -> logout.logoutSuccessUrl("/"))
                 .csrf(csrf -> csrf.ignoringAntMatchers("/api/**"))
                 .build();
@@ -44,11 +41,12 @@ public class SecurityConfig {
     public UserDetailsService userDetailsService(UserService userService) {
         return userId -> userService
                 .searchUser(userId)
+                .map(UserPrincipal::fromDto)
                 .orElseThrow(() -> new EatStoryException(ErrorCode.USER_NOT_FOUND));
     }
 
     @Bean
-    public BCryptPasswordEncoder encodePassword() {
-        return new BCryptPasswordEncoder();
+    public PasswordEncoder passwordEncoder() {
+        return PasswordEncoderFactories.createDelegatingPasswordEncoder();
     }
 }
