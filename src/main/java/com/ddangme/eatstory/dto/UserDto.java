@@ -24,7 +24,6 @@ public class UserDto {
     private UserStatus userStatus;
     private UserRole userRole;
     private String img;
-    private LocalDateTime createdAt;
     private String createdBy;
     private LocalDateTime modifiedAt;
     private String modifiedBy;
@@ -47,7 +46,6 @@ public class UserDto {
                 entity.getUserStatus(),
                 entity.getUserRole(),
                 entity.getImg(),
-                entity.getCreatedAt(),
                 entity.getCreatedBy(),
                 entity.getModifiedAt(),
                 entity.getModifiedBy(),

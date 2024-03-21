@@ -1,6 +1,11 @@
 package com.ddangme.eatstory.domain;
 
 import lombok.*;
+import org.springframework.data.annotation.CreatedBy;
+import org.springframework.data.annotation.LastModifiedBy;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -10,9 +15,10 @@ import java.time.LocalDateTime;
 @Table
 @Entity(name = "users")
 @Builder
+@EntityListeners(AuditingEntityListener.class)
 @NoArgsConstructor
 @AllArgsConstructor
-public class User extends AuditingFields {
+public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,13 +38,28 @@ public class User extends AuditingFields {
 
     private String img;
 
+    @CreatedBy
+    @Column(nullable = false, updatable = false, length = 100)
+    protected String createdBy;
+
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+    @LastModifiedDate
+    @Column(nullable = false)
+    protected LocalDateTime modifiedAt;
+
+    @LastModifiedBy
+    @Column(nullable = false, length = 100)
+    protected String modifiedBy; // 수정자
+
     private LocalDateTime deletedAt;
 
-    public static User join(String userId, String password) {
+
+
+    public static User join(String userId, String password, String nickname) {
         return User.builder()
                 .userId(userId)
                 .password(password)
-                .nickname(userId)
+                .nickname(nickname)
                 .userRole(UserRole.USER)
                 .userStatus(UserStatus.NORMAL)
                 .img(null)

@@ -1,2 +1,2 @@
-INSERT INTO users (user_status, created_at, id, modified_at, created_by, modified_by, img, nickname, password, user_id, user_role)
-    VALUES ('NORMAL', now(), 1, now(), 'ddangme', now(), null, 'ddang_me', '{noop}qwer1234', 'ddang_me', 'USER');
+INSERT INTO users (created_by, deleted_at, img, modified_at, modified_by, nickname, password, user_id, user_role, user_status, id)
+    VALUES ('ddangme', null, null, now(), 'ddangme', 'ddangme', '{noop}qwer1234', 'ddangme', 'USER', 'NORMAL', 1);
