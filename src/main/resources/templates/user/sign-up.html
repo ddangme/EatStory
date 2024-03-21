@@ -12,30 +12,22 @@
 				<div class="col-12">
 					<label for="userId" class="form-label">아이디</label>
 					<input type="text" class="form-control" id="userId" th:field="*{userId}" th:errorclass="field-error" placeholder="" value="">
-					<div class="field-error" th:errors="*{userId}">
-						Valid first name is required.
-					</div>
+					<small class="text-body-warning field-error" th:errors="*{userId}">userId error</small>
 				</div>
 				<div class="col-12">
 					<label for="password" class="form-label">비밀번호</label>
 					<input type="password" class="form-control" id="password" th:errorclass="field-error" th:field="*{password}" placeholder="">
-					<div class="field-error" th:errors="*{password}">
-						Valid first name is required.
-					</div>
+					<small class="text-body-warning field-error" th:errors="*{password}">password error</small>
 				</div>
 				<div class="col-12">
-					<label for="passwordCheck" class="form-label">비밀번호</label>
+					<label for="passwordCheck" class="form-label">비밀번호 확인</label>
 					<input type="password" class="form-control" id="passwordCheck" th:errorclass="field-error" th:field="*{passwordCheck}" placeholder="">
-					<div class="field-error" th:errors="*{passwordCheck}">
-						Valid first name is required.
-					</div>
+					<small class="field-error" th:errors="*{passwordCheck}">password check error</small>
 				</div>
 				<div class="col-12">
 					<label for="nickname" class="form-label">닉네임</label>
 					<input type="text" class="form-control" id="nickname" th:errorclass="field-error" th:field="*{nickname}" placeholder="">
-					<div class="field-error" th:errors="*{nickname}">
-						Valid first name is required.
-					</div>
+					<small class="field-error" th:errors="*{nickname}">nickname error</small>
 				</div>
 			</div>
 
