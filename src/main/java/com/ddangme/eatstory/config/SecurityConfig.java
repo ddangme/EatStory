@@ -23,17 +23,16 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
                 .authorizeHttpRequests(auth -> auth
-                        .mvcMatchers("/login", "/join", "/api/login", "/api/join", "/css/**", "/js/**", "/img/**").permitAll()
+                        .mvcMatchers( "/sign-up", "/css/**", "/js/**", "/img/**", "/").permitAll()
                         .mvcMatchers(
                                 HttpMethod.POST,
-                                "/api/join",
-                                "/api/login"
+                                "/sign-up"
                         ).permitAll()
                         .anyRequest().authenticated()
                 )
                 .formLogin(Customizer.withDefaults())
                 .logout(logout -> logout.logoutSuccessUrl("/"))
-                .csrf(csrf -> csrf.ignoringAntMatchers("/api/**"))
+                .csrf(csrf -> csrf.ignoringAntMatchers("/sign-up"))
                 .build();
     }
 
