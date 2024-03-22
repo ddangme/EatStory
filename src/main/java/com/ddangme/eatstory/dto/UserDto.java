@@ -1,17 +1,12 @@
 package com.ddangme.eatstory.dto;
 
-import com.ddangme.eatstory.domain.User;
-import com.ddangme.eatstory.domain.UserRole;
-import com.ddangme.eatstory.domain.UserStatus;
+import com.ddangme.eatstory.domain.user.User;
+import com.ddangme.eatstory.domain.user.UserRole;
+import com.ddangme.eatstory.domain.user.UserStatus;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDateTime;
-import java.util.Collection;
-import java.util.List;
 
 @Getter
 @AllArgsConstructor

@@ -1,4 +1,4 @@
-package com.ddangme.eatstory.controller;
+package com.ddangme.eatstory.controller.user;
 
 import com.ddangme.eatstory.dto.request.UserJoinRequest;
 import com.ddangme.eatstory.service.UserService;

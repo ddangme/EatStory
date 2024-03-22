@@ -1,11 +1,10 @@
 package com.ddangme.eatstory.service;
 
-import com.ddangme.eatstory.domain.User;
+import com.ddangme.eatstory.domain.user.User;
 import com.ddangme.eatstory.dto.UserDto;
 import com.ddangme.eatstory.dto.request.UserJoinRequest;
 import com.ddangme.eatstory.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

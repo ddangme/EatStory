@@ -1,6 +1,8 @@
-package com.ddangme.eatstory.domain;
+package com.ddangme.eatstory.domain.user;
 
 import lombok.*;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -11,13 +13,14 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Getter
-@ToString(callSuper = true)
 @Table
 @Entity(name = "users")
 @Builder
 @EntityListeners(AuditingEntityListener.class)
 @NoArgsConstructor
 @AllArgsConstructor
+@SQLDelete(sql = "UPDATE users SET deleted_at = NOW() WHERE id = ?")
+@Where(clause = "deleted_at is NULL")
 public class User {
 
     @Id
@@ -49,7 +52,7 @@ public class User {
 
     @LastModifiedBy
     @Column(nullable = false, length = 100)
-    protected String modifiedBy; // 수정자
+    protected String modifiedBy;
 
     private LocalDateTime deletedAt;
 

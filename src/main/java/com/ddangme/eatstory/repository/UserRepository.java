@@ -1,7 +1,7 @@
 package com.ddangme.eatstory.repository;
 
 
-import com.ddangme.eatstory.domain.User;
+import com.ddangme.eatstory.domain.user.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

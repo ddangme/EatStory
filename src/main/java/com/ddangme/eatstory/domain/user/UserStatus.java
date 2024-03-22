@@ -1,4 +1,4 @@
-package com.ddangme.eatstory.domain;
+package com.ddangme.eatstory.domain.user;
 
 import lombok.Getter;
 
