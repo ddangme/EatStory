@@ -35,6 +35,15 @@ public abstract class AuditingFields {
 
     @LastModifiedBy
     @Column(nullable = false, length = 100)
-    protected String modifiedBy; // 수정자
+    protected String modifiedBy;
+
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+    @LastModifiedDate
+    @Column(nullable = false)
+    protected LocalDateTime deletedAt;
+
+    @LastModifiedBy
+    @Column(nullable = false, length = 100)
+    protected String deletedBy;
 
 }
