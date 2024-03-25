@@ -36,6 +36,12 @@ public class UserService {
         userRepository.save(User.join(request.getUserId(), encoder.encode(request.getPassword()), request.getNickname()));
     }
 
+    @Transactional
+    public UserDto saveUser(String username, String password, String nickname) {
+        return UserDto.fromEntity(
+                userRepository.save(User.join(username, password, nickname))
+        );
+    }
 
 
 }

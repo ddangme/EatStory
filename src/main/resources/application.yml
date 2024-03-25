@@ -13,11 +13,29 @@ spring:
     properties:
       hibernate.format_sql: true
       hibernate.default_batch_fetch_size: 100
+  # File upload property
+  servlet:
+    multipart:
+      max-file-size: 100MB
+      max-request-size: 100MB
 #  sql.init.mode: always
-
-jwt:
-  secret-key: ddang_me_eat_story_application-2024.secret_key
-  token.expired-time-ms: 2592000000
+  # Kakao Login property
+  security:
+    oauth2:
+      client:
+        registration:
+          kakao:
+            client-id: ${KAKAO_OAUTH_CLIENT_ID}
+            client-secret: ${KAKAO_OAUTH_CLIENT_SECRET}
+            authorization-grant-type: authorization_code
+            redirect-uri: "{baseUrl}/login/oauth2/code/kakao"
+            client-authentication-method: POST
+        provider:
+          kakao:
+            authorization-uri: https://kauth.kakao.com/oauth/authorize
+            token-uri: https://kauth.kakao.com/oauth/token
+            user-info-uri: https://kapi.kakao.com/v2/user/me
+            user-name-attribute: id
 ---
 
 spring:
